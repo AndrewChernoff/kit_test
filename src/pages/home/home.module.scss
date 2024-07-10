@@ -1,0 +1,66 @@
+
+
+.home {
+    &__content {
+        display: flex;
+        justify-content: space-around;
+        padding: 40px 0;
+
+    }
+
+    .imgs {
+        &__input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: blue;
+            color: white;
+            border-radius: 4px;
+            height: 30px;
+            width: 150px;
+            cursor: pointer;
+
+            input {
+                display: none;
+            }
+        }
+
+        &__previews {
+            &_item {
+                width: 100px;
+                height: auto;
+            }
+        }
+
+    }
+
+    .files {
+        &__input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: blue;
+            color: white;
+            border-radius: 4px;
+            height: 30px;
+            width: 150px;
+            cursor: pointer;
+
+            input {
+                display: none;
+            }
+        }
+
+        .fileList {
+            // Styles for .fileList
+        }
+
+        .uploadButton {
+            // Styles for .uploadButton
+        }
+
+        .result {
+            // Styles for .result
+        }
+    }
+}

@@ -2,13 +2,12 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { logoutThunk } from "../../features/auth/auth";
 import { useAppDispatch } from "../../redux/hooks";
 import { api } from "../../api/api";
-import containerStyles from "../../components/common/styles/container.module.scss"
+import containerStyles from "../../components/common/styles/container.module.scss";
 import s from "./home.module.scss";
 
 export const Home = () => {
   const dispatch = useAppDispatch();
 
-  //const [img, setImg] = useState<string | null>(null);
   const [imagePreviews, setImagePreviews] = useState<Array<string>>([]);
   const [images, setImages] = useState<FileList | null>(null);
 
@@ -21,15 +20,9 @@ export const Home = () => {
     api.getMedia().then((res) => console.log(res));
   }, []);
 
-  /*  const handleImgChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
-    if (e.target.files) {
-      setImg(URL.createObjectURL(e.target.files[0]));
-    }
-  }; */
   const onSelectImage = (e: ChangeEvent<HTMLInputElement>) => {
-    let images: Array<string> = [];
-    let files = e.target.files;
+    const images: Array<string> = [];
+    const files = e.target.files;
 
     if (files) {
       for (let i = 0; i < files.length; i++) {
@@ -48,17 +41,34 @@ export const Home = () => {
     }
   };
 
-  const handleUpload = async () => {
-    if (files || images) {
+  const handleUploadFiles = async () => {
+    if (files) {
+      const filesSize = Array.from(files).reduce(
+        (acc, curr) => acc + curr.size,
+        0
+      );
       setStatus("uploading");
 
-      
-      api.uploadMedia(images)
-        .then(res => console.log(res))
-     
+      if (filesSize > 1048576) {
+        setStatus("fail")
+        alert("Files exceed 1MB size");
+        return;
+      }
+
+      api.uploadMedia(files).then((res) => {
+        setStatus("success")
+        console.log(res)
+      });
     }
   };
 
+  const handleUploadImages = async () => {
+    if (images) {
+      setStatus("uploading");
+
+      api.uploadMedia(images).then((res) => console.log(res));
+    }
+  };
 
   return (
     <>
@@ -70,84 +80,89 @@ export const Home = () => {
         Logout
       </button>
       <div className={s.home}>
-      {(files || images) && (
-            <button className={s.uploadButton} onClick={handleUpload}>
-              Upload {/* {files.length > 1 ? "files" : "a file"} */}
-            </button>
-          )}
+        {files && (
+          <button className={s.uploadButton} onClick={handleUploadFiles}>
+            Upload files
+          </button>
+        )}
+        {images && (
+          <button className={s.uploadButton} onClick={handleUploadImages}>
+            Upload images
+          </button>
+        )}
         <div className={containerStyles.container}>
           <div className={s.home__content}>
-        <div className={s.imgs}>
-          <div className={s.imgs__input}>
-          <label htmlFor="img">Choose img</label>
+            <div className={s.imgs}>
+              <div className={s.imgs__input}>
+                <label htmlFor="img">Choose img</label>
 
-          <input
-            accept="image/*"
-            multiple
-            id="img"
-            type="file"
-            onChange={(e) => {
-              onSelectImage(e);
-            }}
-            //disabled={images.length >= 4}
-          />
-          </div>
-          {imagePreviews && (
-            <div className={s.imgs__previews}>
-              {imagePreviews.map((img, i) => {
-                return (
-                  <img
-                    className={s.imgs__previews_item}
-                    src={img}
-                    alt={"image-" + i}
-                    key={i}
-                  />
-                );
-              })}
+                <input
+                  accept="image/*"
+                  multiple
+                  id="img"
+                  type="file"
+                  onChange={(e) => {
+                    onSelectImage(e);
+                  }}
+                  //disabled={images.length >= 4}
+                />
+              </div>
+              {imagePreviews && (
+                <div className={s.imgs__previews}>
+                  {imagePreviews.map((img, i) => {
+                    return (
+                      <img
+                        className={s.imgs__previews_item}
+                        src={img}
+                        alt={"image-" + i}
+                        key={i}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        <div className={s.files}>
-          <div className={s.files__input}>
-            <label htmlFor="file">Choose files</label>
-            <input
-              id="file"
-              type="file"
-              multiple
-              onChange={handleFileChange}
-            />
-          </div>
-          {files && (
-            <div className={s.fileList}>
-              {[...files].map((file, index) => (
-                <section key={file.name}>
-                  File number {index + 1} details:
-                  <ul>
-                    <li>Name: {file.name}</li>
-                    <li>Type: {file.type}</li>
-                    <li>Size: {file.size} bytes</li>
-                  </ul>
-                </section>
-              ))}
+            <div className={s.files}>
+              <div className={s.files__input}>
+                <label htmlFor="file">Choose files</label>
+                <input
+                  id="file"
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                />
+              </div>
+              {files && (
+                <div className={s.fileList}>
+                  {[...files].map((file, index) => (
+                    <div key={file.name} className={s.fileList__item}>
+                      File № {index + 1} details:
+                      <ul>
+                        <li>Name: {file.name}</li>
+                        <li>Type: {file.type}</li>
+                        <li>Size: {file.size} bytes</li>
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div
+                className={`${s.result} ${
+                  status === "success"
+                    ? s.success
+                    : status === "fail"
+                    ? s.fail
+                    : status === "uploading"
+                    ? s.uploading
+                    : ""
+                }`}
+              >
+                <Result status={status} />
+              </div>
             </div>
-          )}
-          
-          <div
-            className={`${s.result} ${
-              status === "success"
-                ? s.success
-                : status === "fail"
-                ? s.fail
-                : status === "uploading"
-                ? s.uploading
-                : ""
-            }`}
-          >
-            <Result status={status} />
           </div>
         </div>
-        </div>
-      </div>
       </div>
     </>
   );

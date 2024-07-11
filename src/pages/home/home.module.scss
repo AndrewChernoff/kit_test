@@ -26,9 +26,15 @@
         }
 
         &__previews {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+
             &_item {
                 width: 100px;
-                height: auto;
+                border: blue 1px solid;
+                border-radius: 4px;
             }
         }
 
@@ -52,7 +58,17 @@
         }
 
         .fileList {
-            // Styles for .fileList
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+
+            &__item {
+                padding: 10px;
+                width: 300px;
+                border: blue 1px solid;
+                border-radius: 4px;
+            }
         }
 
         .uploadButton {

@@ -18,9 +18,16 @@ export const Media = () => {
   const downloadHandler = (id: string, fileName: string) => {
     api
       .getMediaItem(id)
-      .then((blob) => {
-        console.log(blob);
-        saveAs(blob.data, fileName);
+      .then((res) => {
+        saveAs(res.data, fileName);
+      });
+  };
+
+  const deleteHandler = (id: string) => {
+    api
+      .removeMediaItem(id)
+      .then((res) => {
+        console.log(res);
       });
   };
 
@@ -32,12 +39,11 @@ export const Media = () => {
         <div className={s.media__items}>
           {items?.map((el) => {
             return (
-              <div className={s.mediaItem}>
+              <div className={s.mediaItem} key={el.id}>
                 <div className={s.details}>
                   <div className={s.details__header}>
                     <h3 className={s.name}>{el.name}</h3>
-
-                    <button>delete</button>
+                    <button onClick={() => deleteHandler(el.id)}>delete</button>
                   </div>
                   <p className={s.createdAt}>
                     Created at: {convertDate(el.createdAt)}
@@ -49,7 +55,6 @@ export const Media = () => {
                     download
                     onClick={() => downloadHandler(el.id, el.fileName)}
                   >
-                    {" "}
                     download
                   </a>
                 </div>

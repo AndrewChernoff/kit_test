@@ -24,6 +24,9 @@ export const api = {
     getMediaItem(id: string) {
       return instance.get(`api/media/${id}`, {responseType: 'blob'}) 
     },
+    removeMediaItem(id: string) {
+      return instance.delete(`api/media/${id}`) 
+    },
     uploadMedia(body: any) {
       return instance.post('api/media/upload', body) 
     },

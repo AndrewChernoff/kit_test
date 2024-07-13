@@ -1,8 +1,16 @@
 @import '../../../utils/styles/button-styles.module.scss';
 
 .media {
+    padding-bottom: 50px;
+    h1 {
+        font-size: 30px;
+        margin: 25px 0;
+        text-align: center;
+    }
+
     &__items {
         display: flex;
+        justify-content: space-between;
         flex-wrap: wrap;
         gap: 15px;
 

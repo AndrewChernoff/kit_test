@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { logoutThunk } from "../../../features/auth/auth";
 import { useAppDispatch } from "../../../redux/hooks";
 import s from "./header.module.scss";

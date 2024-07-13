@@ -28,7 +28,6 @@ const publicRoutes = [
 
 const PrivateRoute = () => {
 
-
     const isAuth = localStorage.getItem('auth-token')
 
     return isAuth ? <Outlet /> : <Navigate to="/login" />

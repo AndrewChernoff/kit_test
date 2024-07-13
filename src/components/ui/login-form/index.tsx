@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { loginThunk } from "../../../features/auth/auth";
 import { useAppDispatch } from "../../../redux/hooks";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import s from '../../../utils/styles/forms-styles.module.scss'
 
 export const LoginForm = () => {

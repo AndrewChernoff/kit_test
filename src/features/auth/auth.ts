@@ -1,27 +1,29 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { LoginType } from "../../api/types";
+import { LoginType, MediaUploadStatus, RegisterType } from "../../api/types";
 import { RootState } from "../../redux/store";
 
 export interface AuthState {
   isAuth: boolean;
   isLoading: boolean;
   error: null | string;
+  status: MediaUploadStatus;
 }
 
 const initialState: AuthState = {
   isLoading: false,
   isAuth: false,
   error: null,
+  status: "initial"
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    authMe: (state, action: PayloadAction<boolean>) => {
+    /* authMe: (state, action: PayloadAction<boolean>) => {
         state.isAuth = action.payload; 
-    },
+    }, */
     setAuthError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
@@ -48,8 +50,42 @@ export const authSlice = createSlice({
       builder.addCase(logoutThunk.rejected, (state, action: any) => {
         state.isLoading = false;
         state.error = action.error.message || "Some Error!";
+      }),
+      builder.addCase(registerThunk.fulfilled, (state/* , action: PayloadAction<MediaUploadStatus> */) => {
+        state.isLoading = false;
+        //state.status = action.payload
+      }),
+      builder.addCase(registerThunk.pending, (state) => {
+        state.isLoading = true;
+      }),
+      builder.addCase(registerThunk.rejected, (state, action: any) => {
+        state.isLoading = false;
+        state.error = action.error.message || "Some Error!";
+        //state.status = 'fail'
+        //alert("This email is already taken!")
       })
   },
+});
+
+export const registerThunk = createAsyncThunk<
+void,
+RegisterType,
+{ rejectValue: string }
+>("auth/registerUser", async (data, {rejectWithValue }) => {
+const res = await api.register(data);
+
+try {
+  
+  if (res.data.status !== "ok") {
+    return rejectWithValue("Some Error!");
+  }
+} catch (error) {
+  const axiosError = error as any; /*  AxiosError<ErrorResponse> */
+  if (axiosError.response) {
+    return rejectWithValue(axiosError.response.data.error_text);
+  }
+  return rejectWithValue("Unknown error occurred");
+}
 });
 
 export const loginThunk = createAsyncThunk<
@@ -100,6 +136,6 @@ export const logoutThunk = createAsyncThunk<
 
 export const isAuth = (state: RootState) => state.auth.isAuth;
 
-export const { authMe, setAuthError } = authSlice.actions;
+export const { setAuthError } = authSlice.actions;
 
 export default authSlice.reducer;

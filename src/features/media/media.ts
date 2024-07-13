@@ -1,8 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { MediaItemType } from "../../api/types";
+import { MediaItemType, MediaUploadStatus } from "../../api/types";
 
-type MediaUploadStatus = "initial" | "uploading" | "success" | "fail"
 
 export interface AuthState {
   items: MediaItemType[] | null;
@@ -21,7 +20,7 @@ const initialState: AuthState = {
 };
 
 export const mediaSlice = createSlice({
-  name: "auth",
+  name: "media",
   initialState,
   reducers: {
     setdeletedIds: (state, action: PayloadAction<string | null>) => {

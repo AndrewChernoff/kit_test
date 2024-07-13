@@ -15,3 +15,5 @@ export type MediaItemType = {
   url: string
   createdAt: string;
 }
+
+export type MediaUploadStatus = "initial" | "uploading" | "success" | "fail"

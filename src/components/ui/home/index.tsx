@@ -12,7 +12,7 @@ export const Home = () => {
 
   const [files, setFiles] = useState<FileList | null>(null);
 
-  const status = useAppSelector(state => state.media.status)
+  const { status } = useAppSelector((state) => state.media);
 
   const onSelectImage = (e: ChangeEvent<HTMLInputElement>) => {
     const images: Array<string> = [];
@@ -64,7 +64,6 @@ export const Home = () => {
         (acc, curr) => acc + curr.size,
         0
       );
-
 
       if (imgsSize > 1048576) {
         alert("Files exceed 1MB size");

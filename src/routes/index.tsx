@@ -2,12 +2,21 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-rou
 import { Home } from "../pages/home";
 import { Login } from "../pages/login";
 import { Register } from "../pages/register";
-import { useAppSelector } from "../redux/hooks";
+import { MediaPage } from "../pages/media";
+import { MediaItemPage } from "../pages/media-item-page/media-item-page";
 
 const privateRoutes = [
-    {
+      {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/media",
+        element: <MediaPage />,
+      },
+      {
+        path: "/media/:id",
+        element: <MediaItemPage/>,
       },
     ]
 
@@ -25,9 +34,9 @@ const publicRoutes = [
 const PrivateRoute = () => {
 
 
-    const isAuth = useAppSelector(state => state.auth.isAuth)
-  
-    return !isAuth ? <Navigate to="/login" /> : <Outlet />
+    const isAuth = localStorage.getItem('auth-token')
+
+    return isAuth ? <Outlet /> : <Navigate to="/login" />
   }
 
 

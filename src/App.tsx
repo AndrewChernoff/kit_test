@@ -5,12 +5,12 @@ import { useAppDispatch } from "./redux/hooks";
 import { authMe } from "./features/auth/auth";
 
 function App() {
-  const dispatch = useAppDispatch();
+ /*  const dispatch = useAppDispatch();
   const token = localStorage.getItem("auth-token");
 
   useEffect(() => {
    dispatch(authMe())
-  }, [dispatch, token]);
+  }, [dispatch, token]); */
   return (
     <>
       <Router />

@@ -1,8 +1,8 @@
-import { FormEvent, useState } from "react";
-import s from '../common/styles/forms-styles.module.scss'
+import { FormEvent, useEffect, useState } from "react";
+import s from '../../utils/styles/forms-styles.module.scss'
 import { isAuth, loginThunk } from "../../features/auth/auth";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export const LoginForm = () => {
@@ -10,6 +10,7 @@ export const LoginForm = () => {
     const isUserLoggedIn = useAppSelector(isAuth)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate()
   
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -19,12 +20,15 @@ export const LoginForm = () => {
       .then(() => {
         setEmail("")
         setPassword("")
+        navigate("/");
     });
     };
-
-    if (isUserLoggedIn) {
-        return <Navigate to="/" />
-    }
+        /* useEffect(() => {
+          debugger
+          if (isUserLoggedIn) {
+            navigate("/");
+          }
+        }, [isUserLoggedIn, navigate]); */
   
     return (
       <form className={s.form} onSubmit={handleSubmit}>

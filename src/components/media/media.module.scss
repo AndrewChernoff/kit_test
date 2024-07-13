@@ -1,0 +1,39 @@
+.media {
+    &__items {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        .mediaItem {
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            width: 40%;
+
+            img {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .details {
+                padding: 15px;
+
+                .name {
+                    margin-bottom: 10px;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+
+                .createdAt,
+                .fileName,
+                .mimeType {
+                    margin: 5px 0;
+                    font-size: 14px;
+                    color: #666;
+                }
+            }
+        }
+    }
+}

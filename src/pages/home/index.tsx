@@ -1,11 +1,13 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { logoutThunk } from "../../features/auth/auth";
 import { useAppDispatch } from "../../redux/hooks";
 import { api } from "../../api/api";
-import containerStyles from "../../components/common/styles/container.module.scss";
+import containerStyles from "../../utils/styles/container.module.scss";
+import { Result } from "../../components/common/result";
 import s from "./home.module.scss";
 
 export const Home = () => {
+
   const dispatch = useAppDispatch();
 
   const [imagePreviews, setImagePreviews] = useState<Array<string>>([]);
@@ -15,10 +17,6 @@ export const Home = () => {
   const [status, setStatus] = useState<
     "initial" | "uploading" | "success" | "fail"
   >("initial");
-
-  useEffect(() => {
-    api.getMedia().then((res) => console.log(res));
-  }, []);
 
   const onSelectImage = (e: ChangeEvent<HTMLInputElement>) => {
     const images: Array<string> = [];
@@ -168,14 +166,4 @@ export const Home = () => {
   );
 };
 
-const Result = ({ status }: { status: string }) => {
-  if (status === "success") {
-    return <p>✅ Uploaded successfully!</p>;
-  } else if (status === "fail") {
-    return <p>❌ Upload failed!</p>;
-  } else if (status === "uploading") {
-    return <p>⏳ Uploading started...</p>;
-  } else {
-    return null;
-  }
-};
+

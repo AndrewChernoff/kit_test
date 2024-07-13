@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer  from '../features/auth/auth'
+import mediaReducer from '../features/media/media'
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer
+    auth: authReducer,
+    media: mediaReducer
   },
 })
 

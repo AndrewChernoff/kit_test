@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { api } from "../../api/api";
-import s from "../common/styles/forms-styles.module.scss";
+import s from "../../utils/styles/forms-styles.module.scss";
 
 export const RegistrationForm = () => {
   const [email, setEmail] = useState("");

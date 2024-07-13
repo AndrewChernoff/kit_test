@@ -21,14 +21,13 @@ export const api = {
     getMedia() {
       return instance.get('api/media') 
     },
+    getMediaItem(id: string) {
+      return instance.get(`api/media/${id}`, {responseType: 'blob'}) 
+    },
     uploadMedia(body: any) {
-      debugger
-      console.log(body);
-      
       return instance.post('api/media/upload', body) 
     },
 }
-//whitedrew538@gmail.com
 
 
 instance.interceptors.request.use(

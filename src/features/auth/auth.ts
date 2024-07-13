@@ -22,13 +22,8 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    authMe: (state) => {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        state.isAuth = true;
-      } else {
-        state.isAuth = false;
-      }
+    authMe: (state, action: PayloadAction<boolean>) => {
+        state.isAuth = action.payload; 
     },
     setAuthError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;

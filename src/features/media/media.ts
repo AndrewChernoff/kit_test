@@ -4,11 +4,14 @@ import { AxiosError } from "axios";
 import { MediaItemType } from "../../api/types";
 import { RootState } from "../../redux/store";
 
+type MediaUploadStatus = "initial" | "uploading" | "success" | "fail"
+
 export interface AuthState {
   items: MediaItemType[] | null;
   isLoading: boolean;
   error: null | string;
   deletedIds: string[];
+  status: MediaUploadStatus //for uploading media
 }
 
 const initialState: AuthState = {
@@ -16,6 +19,7 @@ const initialState: AuthState = {
   isLoading: false,
   error: null,
   deletedIds: [],
+  status: "initial"
 };
 
 export const mediaSlice = createSlice({
@@ -28,6 +32,9 @@ export const mediaSlice = createSlice({
       } else {
         state.deletedIds = []
       }
+    },
+    setStatus: (state, action: PayloadAction<MediaUploadStatus>) => {
+      state.status = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -53,9 +60,18 @@ export const mediaSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || "Some Error!";
       })
-      builder.addCase(uploadMediaThunk.rejected, (state, action: any) => {
+      builder.addCase(uploadMediaThunk.fulfilled, (state) => {
         state.isLoading = false;
+        state.status = "success";
+      })
+      builder.addCase(uploadMediaThunk.pending, (state) => {
+        state.status = "uploading";
+      })
+      builder.addCase(uploadMediaThunk.rejected, (state, action: any) => {
+        state.status = "fail";
         state.error = action.error.message || "Some Error!";
+        alert(action.error.message)
+        state.status = 'initial'
       })
   },
 });
@@ -87,12 +103,13 @@ export const uploadMediaThunk = createAsyncThunk<
   void,
   FileList,
   { rejectValue: string }
->("media/uploadMedia", async (data, { rejectWithValue }) => {
+>("media/uploadMedia", async (data, { dispatch, rejectWithValue }) => {
   const res = await api.uploadMedia(data);
 
   try {
-    if (res.data.status === 470) {
-      debugger
+   /*  if(res.data.status === "ok") {
+      dispatch(setStatus('success'))
+    } else  */if (res.data.status === 470) {
       return rejectWithValue("Limit has been reached!");
     }
   } catch (error) {
@@ -129,6 +146,6 @@ export const removeMediaItemThunk = createAsyncThunk<
   }
 });
 
-export const { setdeletedIds } = mediaSlice.actions;
+export const { setdeletedIds, setStatus } = mediaSlice.actions;
 
 export default mediaSlice.reducer;

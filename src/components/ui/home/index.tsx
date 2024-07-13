@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import containerStyles from "../../../utils/styles/container.module.scss";
 import { Result } from "../../common/result";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { uploadMediaThunk } from "../../../features/media/media";
 import s from "./home.module.scss";
 
@@ -11,9 +11,8 @@ export const Home = () => {
   const [images, setImages] = useState<FileList | null>(null);
 
   const [files, setFiles] = useState<FileList | null>(null);
-  const [status, setStatus] = useState<
-    "initial" | "uploading" | "success" | "fail"
-  >("initial");
+
+  const status = useAppSelector(state => state.media.status)
 
   const onSelectImage = (e: ChangeEvent<HTMLInputElement>) => {
     const images: Array<string> = [];
@@ -31,7 +30,6 @@ export const Home = () => {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setStatus("initial");
       setFiles(e.target.files);
     }
   };
@@ -42,10 +40,8 @@ export const Home = () => {
         (acc, curr) => acc + curr.size,
         0
       );
-      setStatus("uploading");
 
       if (filesSize > 1048576) {
-        setStatus("fail");
         alert("Files exceed 1MB size");
         setFiles(null);
         return;
@@ -54,14 +50,10 @@ export const Home = () => {
       disptch(uploadMediaThunk(files))
         .unwrap()
         .then(() => {
-          setStatus("success");
           setFiles(null);
-          setTimeout(() => setStatus("initial"), 4000);
         })
         .catch(() => {
-          setStatus("fail");
           setFiles(null);
-          setTimeout(() => setStatus("initial"), 4000);
         });
     }
   };
@@ -73,10 +65,8 @@ export const Home = () => {
         0
       );
 
-      setStatus("uploading");
 
       if (imgsSize > 1048576) {
-        setStatus("fail");
         alert("Files exceed 1MB size");
         setImagePreviews([]);
         setImages(null);
@@ -86,16 +76,12 @@ export const Home = () => {
       disptch(uploadMediaThunk(images))
         .unwrap()
         .then(() => {
-          setStatus("success");
           setImagePreviews([]);
           setImages(null);
-          setTimeout(() => setStatus("initial"), 4000);
         })
         .catch(() => {
-          setStatus("fail");
           setImagePreviews([]);
           setImages(null);
-          setTimeout(() => setStatus("initial"), 4000);
         });
     }
   };

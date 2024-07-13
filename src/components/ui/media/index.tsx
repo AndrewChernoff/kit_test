@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { fetchMediaThunk, mediaItems } from "../../../features/media/media";
+import { fetchMediaThunk, removeMediaItemThunk } from "../../../features/media/media";
 import { convertDate } from "../../../utils/functions/convert_date";
 import containerStyles from "../../../utils/styles/container.module.scss";
 import { saveAs } from "file-saver";
 import { api } from "../../../api/api";
+import { Loader } from "../../common/loader";
 import s from "./media.module.scss";
 
 export const Media = () => {
   const dispatch = useAppDispatch();
-  const items = useAppSelector(mediaItems);
+  const {items, deletedIds } = useAppSelector(state => state.media);
 
   useEffect(() => {
     dispatch(fetchMediaThunk());
@@ -24,12 +25,20 @@ export const Media = () => {
   };
 
   const deleteHandler = (id: string) => {
-    api
-      .removeMediaItem(id)
-      .then((res) => {
-        console.log(res);
-      });
+    dispatch(removeMediaItemThunk(id))
   };
+
+  if(!items) {
+    return <Loader />
+  }
+
+  if(items.length === 0) {
+    return <h1 className={s.subtitle}>No items</h1>
+  }
+
+const isDisabled = (id: string) => {  
+  return deletedIds.some((el: string) => el === id)
+}
 
   return (
     <div className={s.media}>
@@ -43,7 +52,7 @@ export const Media = () => {
                 <div className={s.details}>
                   <div className={s.details__header}>
                     <h3 className={s.name}>{el.name}</h3>
-                    <button onClick={() => deleteHandler(el.id)}>delete</button>
+                    <button className={s.button} disabled={isDisabled(el.id)} onClick={() => deleteHandler(el.id)}>delete</button>
                   </div>
                   <p className={s.createdAt}>
                     Created at: {convertDate(el.createdAt)}

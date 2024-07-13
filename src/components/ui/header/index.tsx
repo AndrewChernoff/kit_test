@@ -1,10 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logoutThunk } from "../../../features/auth/auth";
 import { useAppDispatch } from "../../../redux/hooks";
 import s from "./header.module.scss";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   return (
@@ -19,7 +20,8 @@ export const Header = () => {
 
         <button
           onClick={() => {
-            dispatch(logoutThunk({}));
+            dispatch(logoutThunk({}))
+            navigate('/login')
           }}
         >
           Logout

@@ -1,4 +1,4 @@
-
+@import '../../../utils//styles/button-styles.module.scss';
 
 .home {
     &__content {
@@ -33,8 +33,6 @@
 
             &_item {
                 width: 100px;
-                border: blue 1px solid;
-                border-radius: 4px;
             }
         }
 
@@ -71,15 +69,31 @@
             }
         }
 
-        .uploadButton {
-            // Styles for .uploadButton
-        }
+        
+    }
+}
 
-        .result {
-            // Styles for .result
+.btns {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    
+    .uploadButton {
+        @include btn(120px, 35px);
+        margin-top: 15px;
+        color: #fff;
+        
+        background: blue;
+    
+        &:disabled {
+            background-color: grey;
+            cursor: not-allowed;
+            pointer-events: none;
+            opacity: 0.6;
         }
     }
 }
+
 
 .status {
     margin: 0 auto;

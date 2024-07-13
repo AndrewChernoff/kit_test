@@ -1,18 +1,24 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import containerStyles from "../../../utils/styles/container.module.scss";
 import { Result } from "../../common/result";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { uploadMediaThunk } from "../../../features/media/media";
+import { setStatus, uploadMediaThunk } from "../../../features/media/media";
 import s from "./home.module.scss";
 
 export const Home = () => {
-  const disptch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const [imagePreviews, setImagePreviews] = useState<Array<string>>([]);
   const [images, setImages] = useState<FileList | null>(null);
 
   const [files, setFiles] = useState<FileList | null>(null);
 
   const { status } = useAppSelector((state) => state.media);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setStatus("initial"));
+    };
+  }, []);
 
   const onSelectImage = (e: ChangeEvent<HTMLInputElement>) => {
     const images: Array<string> = [];
@@ -47,7 +53,7 @@ export const Home = () => {
         return;
       }
 
-      disptch(uploadMediaThunk(files))
+      dispatch(uploadMediaThunk(files))
         .unwrap()
         .then(() => {
           setFiles(null);
@@ -72,7 +78,7 @@ export const Home = () => {
         return;
       }
 
-      disptch(uploadMediaThunk(images))
+      dispatch(uploadMediaThunk(images))
         .unwrap()
         .then(() => {
           setImagePreviews([]);
@@ -87,17 +93,19 @@ export const Home = () => {
 
   return (
     <div className={s.home}>
-      {files && (
-        <button className={s.uploadButton} onClick={handleUploadFiles}>
-          Upload files
-        </button>
-      )}
-      {images && (
-        <button className={s.uploadButton} onClick={handleUploadImages}>
-          Upload images
-        </button>
-      )}
       <div className={containerStyles.container}>
+        <div className={s.btns}>
+          {files && (
+            <button className={s.uploadButton} onClick={handleUploadFiles}>
+              Upload files
+            </button>
+          )}
+          {images && (
+            <button className={s.uploadButton} onClick={handleUploadImages}>
+              Upload images
+            </button>
+          )}
+        </div>
         <div className={s.home__content}>
           <div className={s.imgs}>
             <div className={s.imgs__input}>
@@ -111,7 +119,6 @@ export const Home = () => {
                 onChange={(e) => {
                   onSelectImage(e);
                 }}
-                //disabled={images.length >= 4}
               />
             </div>
             {imagePreviews && (

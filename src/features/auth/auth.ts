@@ -1,10 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { AxiosError } from "axios";
 import { LoginType } from "../../api/types";
 import { RootState } from "../../redux/store";
-/* import { AuthUserType } from "./types";
-import { ErrorResponse } from "../common-types"; */
 
 export interface AuthState {
   isAuth: boolean;

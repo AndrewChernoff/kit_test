@@ -1,8 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { AxiosError } from "axios";
 import { MediaItemType } from "../../api/types";
-import { RootState } from "../../redux/store";
 
 type MediaUploadStatus = "initial" | "uploading" | "success" | "fail"
 
@@ -103,7 +101,7 @@ export const uploadMediaThunk = createAsyncThunk<
   void,
   FileList,
   { rejectValue: string }
->("media/uploadMedia", async (data, { dispatch, rejectWithValue }) => {
+>("media/uploadMedia", async (data, { rejectWithValue }) => {
   const res = await api.uploadMedia(data);
 
   try {

@@ -1,0 +1,23 @@
+@import '../../../utils/styles/button-styles.module.scss';
+
+.header {
+    height: 100px;
+    background: #011136;
+    padding: 10px;
+
+    &__container {
+        width: 85%;
+        margin: 0 auto;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between
+    }
+
+    button {
+        @include btn(75px, 35px);
+        background-color: white;
+        color: blue;
+    }
+}

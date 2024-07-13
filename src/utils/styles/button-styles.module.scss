@@ -1,0 +1,13 @@
+@mixin btn($width, $height) {
+    width: $width;
+    height: $height;       
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+
+    &:active {
+        top: .1em;
+        left: .1em;
+        box-shadow: 0 0 0 60px rgba(0, 0, 0, .05) inset;
+    }
+  }

@@ -1,5 +1,10 @@
-import { Media } from "../../components/media";
+import WrapperHeader from "../../components/common/wrapper-header";
+import { Media } from "../../components/ui/media";
 
 export const MediaPage = () => {
-  return <Media />;
+  return (
+    <WrapperHeader>
+      <Media />
+      </WrapperHeader>
+  );
 };

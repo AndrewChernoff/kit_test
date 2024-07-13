@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import { api } from "../../api/api";
-import s from "../../utils/styles/forms-styles.module.scss";
+import { api } from "../../../api/api";
+import s from "../../../utils/styles/forms-styles.module.scss";
 
 export const RegistrationForm = () => {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ export const RegistrationForm = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Здесь можно добавить логику для отправки данных на сервер или их обработки
+
     api.register({ email, password, name });
   };
 

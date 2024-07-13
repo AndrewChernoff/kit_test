@@ -1,22 +1,17 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
-import { Home } from "../pages/home";
+import { HomePage } from "../pages/home";
 import { Login } from "../pages/login";
 import { Register } from "../pages/register";
 import { MediaPage } from "../pages/media";
-import { MediaItemPage } from "../pages/media-item-page/media-item-page";
 
 const privateRoutes = [
       {
         path: "/",
-        element: <Home />,
+        element: <HomePage />,
       },
       {
         path: "/media",
         element: <MediaPage />,
-      },
-      {
-        path: "/media/:id",
-        element: <MediaItemPage/>,
       },
     ]
 

@@ -1,20 +1,18 @@
-import { FormEvent, useEffect, useState } from "react";
-import s from '../../utils/styles/forms-styles.module.scss'
-import { isAuth, loginThunk } from "../../features/auth/auth";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Navigate, useNavigate } from "react-router-dom";
-
+import { FormEvent, useState } from "react";
+import { loginThunk } from "../../../features/auth/auth";
+import { useAppDispatch } from "../../../redux/hooks";
+import {  useNavigate } from "react-router-dom";
+import s from '../../../utils/styles/forms-styles.module.scss'
 
 export const LoginForm = () => {
     const dispatch = useAppDispatch()
-    const isUserLoggedIn = useAppSelector(isAuth)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate()
   
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // Здесь можно добавить логику для отправки данных на сервер или их обработки
+
       dispatch(loginThunk({ email, password }))
       .unwrap()
       .then(() => {
@@ -23,12 +21,6 @@ export const LoginForm = () => {
         navigate("/");
     });
     };
-        /* useEffect(() => {
-          debugger
-          if (isUserLoggedIn) {
-            navigate("/");
-          }
-        }, [isUserLoggedIn, navigate]); */
   
     return (
       <form className={s.form} onSubmit={handleSubmit}>

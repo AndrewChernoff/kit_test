@@ -20,8 +20,10 @@ export const Header = () => {
 
         <button
           onClick={() => {
-            dispatch(logoutThunk({}))
-            navigate('/login')
+            dispatch(logoutThunk({})).unwrap()
+            .then(() => {
+              navigate('/login')
+            })
           }}
         >
           Logout

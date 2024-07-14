@@ -23,7 +23,7 @@ export const mediaSlice = createSlice({
   name: "media",
   initialState,
   reducers: {
-    setdeletedIds: (state, action: PayloadAction<string | null>) => {
+    setdeletedIds: (state, action: PayloadAction<Nullable<string>>) => {
       if (action.payload) {
         state.deletedIds.push(action.payload);
       } else {
@@ -32,6 +32,9 @@ export const mediaSlice = createSlice({
     },
     setStatus: (state, action: PayloadAction<MediaUploadStatus>) => {
       state.status = action.payload
+    },
+    setError: (state, action: PayloadAction<Nullable<string>>) => {
+      state.error = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -67,7 +70,6 @@ export const mediaSlice = createSlice({
       builder.addCase(uploadMediaThunk.rejected, (state, action: any) => {
         state.status = "fail";
         state.error = action.error.message || "Some Error!";
-        alert(action.error.message)
         state.status = 'initial'
       })
   },
@@ -104,13 +106,11 @@ export const uploadMediaThunk = createAsyncThunk<
   const res = await api.uploadMedia(data);
 
   try {
-   /*  if(res.data.status === "ok") {
-      dispatch(setStatus('success'))
-    } else  */if (res.data.status === 470) {
+   if (res.data.status === 470) {
       return rejectWithValue("Limit has been reached!");
     }
   } catch (error) {
-    const axiosError = error as any; /*  AxiosError<ErrorResponse> */
+    const axiosError = error as any;
     if (axiosError.response) {
       return rejectWithValue(axiosError.response.data.error_text);
     }
@@ -135,7 +135,7 @@ export const removeMediaItemThunk = createAsyncThunk<
       return rejectWithValue("Some Error!");
     }
   } catch (error) {
-    const axiosError = error as any; /*  AxiosError<ErrorResponse> */
+    const axiosError = error as any;
     if (axiosError.response) {
       return rejectWithValue(axiosError.response.data.error_text);
     }
@@ -143,6 +143,6 @@ export const removeMediaItemThunk = createAsyncThunk<
   }
 });
 
-export const { setdeletedIds, setStatus } = mediaSlice.actions;
+export const { setdeletedIds, setStatus, setError } = mediaSlice.actions;
 
 export default mediaSlice.reducer;

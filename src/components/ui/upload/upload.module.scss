@@ -1,9 +1,8 @@
 @import '../../../utils//styles/button-styles.module.scss';
 
-
-
-
 .home {
+    padding-top: 30px;
+
     &__content {
         display: flex;
         justify-content: space-around;
@@ -33,10 +32,6 @@
             flex-direction: column;
             gap: 10px;
             margin-top: 15px;
-
-            &_item {
-                width: 100px;
-            }
         }
 
     }
@@ -70,9 +65,7 @@
                 border: blue 1px solid;
                 border-radius: 4px;
             }
-        }
-
-        
+        }  
     }
 }
 

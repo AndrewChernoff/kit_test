@@ -2,8 +2,11 @@ import { ChangeEvent, useEffect, useState } from "react";
 import containerStyles from "../../../utils/styles/container.module.scss";
 import { Result } from "../../common/result";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { setStatus, uploadMediaThunk } from "../../../features/media/media";
+import { setError, setStatus, uploadMediaThunk } from "../../../features/media/media";
 import { Nullable } from "../../../api/types";
+import { FileItem } from "./file-item";
+import { ImgItem } from "./img-item";
+import { ErrorBlock } from "../../common/error-block";
 import s from "./upload.module.scss";
 
 export const Upload = () => {
@@ -13,11 +16,12 @@ export const Upload = () => {
 
   const [files, setFiles] = useState<Nullable<FileList>>(null);
 
-  const { status } = useAppSelector((state) => state.media);
+  const { status, error } = useAppSelector((state) => state.media);
 
   useEffect(() => {
     return () => {
-      dispatch(setStatus("initial"));
+      status !== "initial" && dispatch(setStatus("initial"));
+      error && dispatch(setError(null))
     };
   }, []);
 
@@ -95,6 +99,7 @@ export const Upload = () => {
   return (
     <div className={s.home}>
       <div className={containerStyles.container}>
+        {error && <ErrorBlock errorMessage={error}/>}
         <div className={s.btns}>
           {files && (
             <button className={s.uploadButton} onClick={handleUploadFiles}>
@@ -126,12 +131,8 @@ export const Upload = () => {
               <div className={s.imgs__previews}>
                 {imagePreviews.map((img, i) => {
                   return (
-                    <img
-                      className={s.imgs__previews_item}
-                      src={img}
-                      alt={"image-" + i}
-                      key={i}
-                    />
+                    <ImgItem key={`${i} img`} img={img} alt={`${i} img`}/>
+                   
                   );
                 })}
               </div>
@@ -150,16 +151,10 @@ export const Upload = () => {
             </div>
             {files && (
               <div className={s.fileList}>
-                {[...files].map((file, index) => (
-                  <div key={file.name} className={s.fileList__item}>
-                    File № {index + 1} details:
-                    <ul>
-                      <li>Name: {file.name}</li>
-                      <li>Type: {file.type}</li>
-                      <li>Size: {file.size} bytes</li>
-                    </ul>
-                  </div>
-                ))}
+                {[...files].map((file, index) => {
+                  return <FileItem key={`${file.name} ${index}`} name={file.name} number={index + 1} type={file.type} size={file.size} />
+                }
+                )}
               </div>
             )}
           </div>

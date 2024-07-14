@@ -1,6 +1,5 @@
 @import '../../../utils/styles/button-styles.module.scss';
 
-
 .subtitle {
     width: 10%;
     font-size: 30px;
@@ -19,9 +18,11 @@
 
     &__items {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         flex-wrap: wrap;
         gap: 15px;
+
+        margin: 0 auto;
 
         .mediaItem {
             background-color: #f5f5f5;

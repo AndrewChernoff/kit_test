@@ -1,10 +1,10 @@
 import WrapperHeader from "../../components/common/wrapper-header";
-import { Home } from "../../components/ui/home";
+import { Upload } from "../../components/ui/upload";
 
-export const HomePage = () => {
+export const UploadPage = () => {
   return (
     <WrapperHeader>
-      <Home />
+      <Upload />
     </WrapperHeader>
   );
 };

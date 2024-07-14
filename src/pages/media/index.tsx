@@ -5,6 +5,6 @@ export const MediaPage = () => {
   return (
     <WrapperHeader>
       <Media />
-      </WrapperHeader>
+    </WrapperHeader>
   );
 };

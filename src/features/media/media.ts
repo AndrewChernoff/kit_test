@@ -1,12 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { MediaItemType, MediaUploadStatus } from "../../api/types";
+import { MediaItemType, MediaUploadStatus, Nullable } from "../../api/types";
 
 
 export interface AuthState {
-  items: MediaItemType[] | null;
+  items: Nullable<MediaItemType[]>;
   isLoading: boolean;
-  error: null | string;
+  error: Nullable<string>
   deletedIds: string[];
   status: MediaUploadStatus //for uploading media
 }

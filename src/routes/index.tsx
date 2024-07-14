@@ -1,16 +1,17 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
-import { HomePage } from "../pages/home";
+import { UploadPage } from "../pages/upload";
 import { Login } from "../pages/login";
 import { Register } from "../pages/register";
 import { MediaPage } from "../pages/media";
+import { NotFound } from "../pages/not-found";
 
 const privateRoutes = [
       {
-        path: "/",
-        element: <HomePage />,
+        path: "/upload",
+        element: <UploadPage />,
       },
       {
-        path: "/media",
+        path: "/",
         element: <MediaPage />,
       },
     ]
@@ -23,6 +24,10 @@ const publicRoutes = [
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/*",
+    element: <NotFound />,
   },
 ];
 

@@ -17,3 +17,5 @@ export type MediaItemType = {
 }
 
 export type MediaUploadStatus = "initial" | "uploading" | "success" | "fail"
+
+export type Nullable<T> = T | null

@@ -3,14 +3,15 @@ import containerStyles from "../../../utils/styles/container.module.scss";
 import { Result } from "../../common/result";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { setStatus, uploadMediaThunk } from "../../../features/media/media";
-import s from "./home.module.scss";
+import { Nullable } from "../../../api/types";
+import s from "./upload.module.scss";
 
-export const Home = () => {
+export const Upload = () => {
   const dispatch = useAppDispatch();
   const [imagePreviews, setImagePreviews] = useState<Array<string>>([]);
-  const [images, setImages] = useState<FileList | null>(null);
+  const [images, setImages] = useState<Nullable<FileList>>(null);
 
-  const [files, setFiles] = useState<FileList | null>(null);
+  const [files, setFiles] = useState<Nullable<FileList>>(null);
 
   const { status } = useAppSelector((state) => state.media);
 
@@ -108,9 +109,9 @@ export const Home = () => {
         </div>
         <div className={s.home__content}>
           <div className={s.imgs}>
+          <div className={s.counter}>{imagePreviews.length > 0 && `Choosen images: ${imagePreviews.length}`}</div>
             <div className={s.imgs__input}>
               <label htmlFor="img">Choose img</label>
-
               <input
                 accept="image/*"
                 multiple
@@ -137,6 +138,7 @@ export const Home = () => {
             )}
           </div>
           <div className={s.files}>
+          <div className={s.counter}>{(files && files.length > 0) && `Choosen files ${files.length}`}</div>
             <div className={s.files__input}>
               <label htmlFor="file">Choose files</label>
               <input

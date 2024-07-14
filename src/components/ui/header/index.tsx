@@ -13,7 +13,7 @@ export const Header = () => {
       <div className={s.header__container}>
         <div className={s.header__content}>
         {pathname === "/" ? (
-          <Link to={"/media"}>Media</Link>
+          <Link to={"/upload"}>Media</Link>
         ) : (
           <Link to={"/"}>Upload</Link>
         )}

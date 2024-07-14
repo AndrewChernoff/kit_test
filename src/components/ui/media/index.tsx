@@ -21,6 +21,9 @@ export const Media = () => {
       .getMediaItem(id)
       .then((res) => {
         saveAs(res.data, fileName);
+      })
+      .catch(() => {
+        alert('Failed to load file!')
       });
   };
 

@@ -1,12 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
-import { LoginType, MediaUploadStatus, RegisterType } from "../../api/types";
+import { LoginType, MediaUploadStatus, Nullable, RegisterType } from "../../api/types";
 import { RootState } from "../../redux/store";
 
 export interface AuthState {
   isAuth: boolean;
   isLoading: boolean;
-  error: null | string;
+  error: Nullable<string>;
   status: MediaUploadStatus;
 }
 
@@ -21,9 +21,6 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    /* authMe: (state, action: PayloadAction<boolean>) => {
-        state.isAuth = action.payload; 
-    }, */
     setAuthError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
     },
@@ -51,9 +48,8 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message || "Some Error!";
       }),
-      builder.addCase(registerThunk.fulfilled, (state/* , action: PayloadAction<MediaUploadStatus> */) => {
+      builder.addCase(registerThunk.fulfilled, (state) => {
         state.isLoading = false;
-        //state.status = action.payload
       }),
       builder.addCase(registerThunk.pending, (state) => {
         state.isLoading = true;
@@ -61,8 +57,6 @@ export const authSlice = createSlice({
       builder.addCase(registerThunk.rejected, (state, action: any) => {
         state.isLoading = false;
         state.error = action.error.message || "Some Error!";
-        //state.status = 'fail'
-        //alert("This email is already taken!")
       })
   },
 });

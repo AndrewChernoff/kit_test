@@ -1,5 +1,8 @@
 @import '../../../utils//styles/button-styles.module.scss';
 
+
+
+
 .home {
     &__content {
         display: flex;
@@ -94,6 +97,10 @@
     }
 }
 
+.counter {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
 
 .status {
     margin: 0 auto;
